@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 import {
   CForm,
@@ -13,83 +13,105 @@ import {
   CCol,
   CRow,
   CLink,
-} from '@coreui/react'
-import { DocsCallout, DocsExample } from 'src/components'
+} from "@coreui/react";
+import { DocsCallout, DocsExample } from "src/components";
 
 const Breadcrumbs = () => {
-  const [selectedFile, setSelectedFile] = useState()
+  const [modelFile, setModelFile] = useState();
+  const [developmentFile, setDevelopmentFile] = useState();
+  const [monitoringFile, setMonitoringFile] = useState();
   //   {
   //   modelObject: '',
   //   development: '',
   //   monitoring: '',
   // }
-  const inputChangeFile = (event) => {
-    // const value = event.target.value;
-    // const name = event.target.name;
-    console.log('%cBreadcrumbs.js line:29 event', 'color: #007acc;', event)
-    setSelectedFile(event.target.files[0])
-    console.log('xxxxx')
-    // onSubmits()
-    // setSelectedFile((prevalue) => {
-    //   return {
-    //     ...prevalue,
-    //     [event.target.name]: event.target.files[0],
-    //   }
+  // const inputChangeFile = (event) => {
 
-    //   //   if (name === "fname") {
-    //   //     return { fName: value, lName: prevalue.lName };
-    //   //   } else if (name === "lname") {
-    //   //     return { fName: prevalue.fName, lName: value };
-    //   //   }
-    // })
-  }
+  //   setSelectedFile(event.target.files[0]);
+  //   console.log("xxxxx");
+
+  //   setSelectedFile((prevalue) => {
+  //     return {
+  //       ...prevalue,
+  //       [event.target.name]: event.target.files[0],
+  //     }
+
+  //     //   if (name === "fname") {
+  //     //     return { fName: value, lName: prevalue.lName };
+  //     //   } else if (name === "lname") {
+  //     //     return { fName: prevalue.fName, lName: value };
+  //     //   }
+  //   })
+  // };
   // setSelectedFile(event.target.files[0])
   const onSubmits = (event) => {
-    // event.preventDefault()
-    alert('ok')
-    // setSelectedFile(event.target.files[0
-    sendForm()
-  }
+    event.preventDefault();
+    sendForm();
+  };
   const sendForm = () => {
-    const formData = new FormData()
-    // formData.append('modelObject', selectedFile.modelObject)
-    // formData.append('development', selectedFile.development)
-    formData.append('monitoring', selectedFile)
+    const formData = new FormData();
+    formData.append("model", modelFile);
+    formData.append("development", developmentFile);
+    formData.append("monitoring", monitoringFile);
     // formData.append('year', field.examYear)
     // formData.append('fileNo', field.fileNo)
     // formData.append('fullMarks', field.fullMarks)
     // formData.append('totalQuestion', field.totalQuestion)
-    const url = 'https://www.mockachino.com/spaces/1e42b893-7c1b-41'
+    //test purpose https://www.mockachino.com/
+    const url = "https://www.mockachino.com/83b6ef2d-5148-41/users";
     const params = {
-      method: 'POST',
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
+      method: "POST",
+      // headers: {
+      //   "content-type": "multipart/form-data",
+      // },
       body: formData,
-    }
+    };
     fetch(url, params)
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          alert(json.message)
-        } else {
-          alert('Not Uploaded!!')
-        }
-      })
-  }
+        console.log("%cBreadcrumbs.js line:73 json", "color: #007acc;", json);
+        // if (json.success) {
+        //   alert(json.message);
+        // } else {
+        //   alert("Not Uploaded!!");
+        // }
+      });
+  };
 
   return (
     <>
       <h1>Data Input</h1>
+      {/* <form onSubmit={onSubmits}>
+        <div className="custom-file">
+          <input
+            type="file"
+            className="custom-file-input"
+            id="customFile"
+            onChange={(e) => {
+              setSelectedFile(e.target.files[0]);
+            }}
+            name="monitoring"
+            
+          />
+          <label className="custom-file-label" for="customFile">
+            Choose file
+          </label>
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Upload
+        </button>
+      </form> */}
       <CForm className="row g-3" onSubmit={onSubmits}>
-        {/* <div className="mb-3">
+        <div className="mb-3">
           <CFormLabel htmlFor="formFile">Model Object (.rds)File</CFormLabel>
           <CFormInput
             type="file"
             id="formFile"
-            onChange={inputChangeFile}
-            name="modelObject"
-            value={selectedFile.modelObject}
+            onChange={(e) => {
+              setModelFile(e.target.files[0]);
+            }}
+            name="model"
+            // value={selectedFile.modelObject}
           />
         </div>
         <div className="mb-3">
@@ -97,19 +119,23 @@ const Breadcrumbs = () => {
           <CFormInput
             type="file"
             id="formFile"
-            onChange={inputChangeFile}
+            onChange={(e) => {
+              setDevelopmentFile(e.target.files[0]);
+            }}
             name="development"
-            value={selectedFile.development}
+            // value={selectedFile.development}
           />
-        </div> */}
+        </div>
         <div className="mb-3">
           <CFormLabel htmlFor="formFile">Monitoring Data</CFormLabel>
           <CFormInput
             type="file"
             id="formFile"
-            onChange={inputChangeFile}
+            onChange={(e) => {
+              setMonitoringFile(e.target.files[0]);
+            }}
             name="monitoring"
-            value={selectedFile}
+            // value={selectedFile}
           />
         </div>
         <CCol xs={12}>
@@ -151,18 +177,8 @@ const Breadcrumbs = () => {
                 </CBreadcrumb>
                 <CBreadcrumb>
                   <CBreadcrumbItem>
-                    <CLink href="#">Home</CLink>
-                  </CBreadcrumbItem>
-                  <CBreadcrumbItem>
-                    <CLink href="#">Library</CLink>
-                  </CBreadcrumbItem>
-                  <CBreadcrumbItem active>Data</CBreadcrumbItem>
-                </CBreadcrumb>
-                <CBreadcrumb>
-                  <CBreadcrumbItem>
-                    <CLink href="#">Home</CLink>
-                  </CBreadcrumbItem>
-                  <CBreadcrumbItem>
+                    <CLink href="#">Home</CLink>https://www.mockachino.com/83b6ef2d-5148-41/
+
                     <CLink href="#">Library</CLink>
                   </CBreadcrumbItem>
                   <CBreadcrumbItem>
@@ -176,7 +192,7 @@ const Breadcrumbs = () => {
         </CCol>
       </CRow> */}
     </>
-  )
-}
+  );
+};
 
-export default Breadcrumbs
+export default Breadcrumbs;
